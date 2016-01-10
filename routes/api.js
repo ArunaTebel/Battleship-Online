@@ -8,7 +8,7 @@ var fs = require('fs');
  */
 exports.name = function (req, res) {
     res.json({
-        name: 'Bob'
+        name: 'Aruna Tebel'
     });
 };
 
@@ -45,6 +45,19 @@ exports.relations = function relations(req, res, text) {
 
 exports.concepts = function concepts(req, res, text) {
     alchemyapi.concepts('text', text, {'showSourceText': 1}, function (response) {
+        res.send(JSON.stringify(response));
+    });
+};
+
+exports.textCategory = function category(req, res, text) {
+    alchemyapi.category('text', text, {}, function (response) {
+        res.send(JSON.stringify(response));
+    });
+};
+
+// todo
+exports.taxonomy = function taxonomy(req, res, url) {
+    alchemyapi.taxonomy('url', url, {}, function (response) {
         res.send(JSON.stringify(response));
     });
 };
@@ -94,14 +107,6 @@ function title(req, res, output) {
 }
 
 
-function category(req, res, output) {
-    alchemyapi.category('text', demo_text, {}, function (response) {
-        output['category'] = {text: demo_text, response: JSON.stringify(response, null, 4), results: response};
-        feeds(req, res, output);
-    });
-}
-
-
 function feeds(req, res, output) {
     alchemyapi.feeds('url', demo_url, {}, function (response) {
         output['feeds'] = {url: demo_url, response: JSON.stringify(response, null, 4), results: response['feeds']};
@@ -121,13 +126,6 @@ function microformats(req, res, output) {
     });
 }
 
-
-function taxonomy(req, res, output) {
-    alchemyapi.taxonomy('url', demo_url, {}, function (response) {
-        output['taxonomy'] = {url: demo_url, response: JSON.stringify(response, null, 4), results: response};
-        combined(req, res, output);
-    });
-}
 
 function combined(req, res, output) {
     alchemyapi.combined('url', demo_url, {}, function (response) {

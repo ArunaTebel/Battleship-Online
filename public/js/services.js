@@ -97,5 +97,9 @@ services.factory('InformationParserService', [function () {
             relevances: relevances
         };
     };
+
+    o.getTextCategoryData = function (obj) {
+        return obj;
+    };
     return o;
 }]);

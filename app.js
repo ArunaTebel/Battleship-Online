@@ -72,6 +72,14 @@ app.post('/api/concepts', function (req, res, next) {
     api.concepts(req, res, req.body.text);
 });
 
+app.post('/api/taxonomy', function (req, res, next) {
+    api.taxonomy(req, res, req.body.text);
+});
+
+app.post('/api/text-category', function (req, res, next) {
+    api.textCategory(req, res, req.body.text);
+});
+
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 
