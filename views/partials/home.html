@@ -1,0 +1,170 @@
+<div ng-controller="MainCtrl">
+    <form name="text-data-form" method="post">
+        <div class="form-group">
+    <textarea name="text-data" cols="150" rows="5" placeholder="Text to be analyzed..."
+              ng-model="textToAnalyze">
+    </textarea>
+        </div>
+        <button class="btn btn-default" ng-click="analyze('all')">Analyze</button>
+    </form>
+
+    <br>
+    <strong>Language : </strong><span class="label label-success">{{ent_response.language | uppercase}}</span>
+    <hr>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Analytics of entities</h3>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    AlchemyAPI is capable of identifying people, companies, organizations, cities, geographic features,
+                    and
+                    other typed entities within your HTML, text, or web-based content. We employ sophisticated
+                    statistical
+                    algorithms and natural language processing technology to analyze your information, extracting the
+                    semantic richness embedded within.
+                </div>
+            </div>
+
+            <table class="table table-condensed">
+                <tr>
+                    <th>Entity</th>
+                    <th>Type</th>
+                    <th>Relevance</th>
+                </tr>
+                <tr ng-repeat="entity in ent_response.entities">
+                    <td>{{ entity.text }}</td>
+                    <td>{{ entity.type }}</td>
+                    <td>{{ entity.relevance }}</td>
+                </tr>
+            </table>
+            <div class="canvas-container">
+                <canvas id="line" class="chart chart-line" chart-data="ent_data"
+                        chart-labels="ent_labels" chart-legend="true" chart-series="ent_series"
+                        chart-click="onClick">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Keyword extraction</h3>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    AlchemyAPI is capable of extracting topic keywords from your HTML, text, or web-based content. We
+                    employ sophisticated statistical algorithms and natural language processing technology to analyze
+                    your data, extracting keywords that can be used to index content, generate tag clouds, and more.
+                </div>
+            </div>
+            <table class="table table-condensed">
+                <tr>
+                    <th>Keyword</th>
+                    <th>Relevance</th>
+                </tr>
+                <tr ng-repeat="keyword in keyw_response.keywords">
+                    <td>{{ keyword.text }}</td>
+                    <td>{{ keyword.relevance }}</td>
+                </tr>
+            </table>
+            <div class="canvas-container">
+                <canvas id="bar" class="chart chart-bar" chart-data="keyw_data"
+                        chart-labels="keyw_labels" chart-legend="true" chart-series="keyw_series"
+                        chart-click="onClick">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Relations extraction</h3>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    AlchemyAPI is capable of identifying Subject-Action-Object relations within your HTML, text, or
+                    web-based content. We employ sophisticated statistical algorithms and natural language processing
+                    technology to analyze your information, extracting the semantic richness embedded within.
+                </div>
+            </div>
+            <table class="table table-condensed">
+                <tr>
+                    <th>Sentence</th>
+                    <th>Subject</th>
+                    <th>Action</th>
+                    <th>Action Lemmatized</th>
+                    <th>Action Verb</th>
+                    <th>Action Verb Tense</th>
+                    <th>Object</th>
+                    <th>Location</th>
+                </tr>
+                <tr ng-repeat="obj in rel_response">
+                    <td>{{ obj.sentence }}</td>
+                    <td>{{ obj.subject.text }}</td>
+                    <td>{{ obj.action.text }}</td>
+                    <td>{{ obj.action.lemmatized }}</td>
+                    <td>{{ obj.action.verb.text }}</td>
+                    <td>{{ obj.action.verb.tense }}</td>
+                    <td>{{ obj.object.text }}</td>
+                    <td>{{ obj.location.text }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Concepts Analysis</h3>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    AlchemyAPI is capable of automatically tagging your HTML, text, or web-based content. We employ
+                    sophisticated natural language processing technology to analyze your data, tagging your information
+                    in a manner similar to human-based tagging. AlchemyAPI's concept tagging API is capable of
+                    abstraction, understanding how concepts relate and tagging accordingly ("My favorite brands are BMW,
+                    Ferrari, and Porsche." = "Automotive Industry").
+                </div>
+            </div>
+            <table class="table table-condensed">
+                <tr>
+                    <th>Text</th>
+                    <th>Relevance</th>
+                    <th>Website</th>
+                    <th>DBPedia</th>
+                    <th>Freebase</th>
+                    <th>OpenCyc</th>
+                    <th>Yago</th>
+                    <th>Crunchbase</th>
+                </tr>
+                <tr ng-repeat="obj in con_response">
+                    <td>{{ obj.text }}</td>
+                    <td>{{ obj.relevance }}</td>
+                    <td><a href="{{obj.website}}"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a>
+                    </td>
+                    <td><a href="{{ obj.dbpedia }}"><span class="glyphicon glyphicon-link"
+                                                          aria-hidden="true"></span></a></a></td>
+                    <td><a href="{{ obj.freebase }}"><span class="glyphicon glyphicon-link"
+                                                           aria-hidden="true"></span></a></a></td>
+                    <td><a href="{{ obj.opencyc }}"><span class="glyphicon glyphicon-link"
+                                                          aria-hidden="true"></span></a></a></td>
+                    <td><a href="{{ obj.yago }}"><span class="glyphicon glyphicon-link"
+                                                       aria-hidden="true"></span></a></a></td>
+                    <td><a href="{{ obj.crunchbase }}"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a></a>
+                    </td>
+                </tr>
+            </table>
+            <div class="canvas-container">
+                <canvas id="radar" class="chart chart-radar"
+                        chart-data="con_relevances" chart-labels="con_texts">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+</div>

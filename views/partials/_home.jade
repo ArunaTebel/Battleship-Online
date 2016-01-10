@@ -1,0 +1,7 @@
+form(name="text-data-form", method="post")
+    div.input
+        textarea(name="description", cols="40", rows="5", placeholder="Text to be analyzed ...", ng-model="textToAnalyze")
+    div.actions
+        button(ng-click="analyze('bullshit')") Analyze
+
+p #{response}
