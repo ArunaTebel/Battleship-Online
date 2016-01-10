@@ -16,7 +16,7 @@ myApp.config(function ($routeProvider, $locationProvider) {
             controller: 'MainCtrl'
         }).
         otherwise({
-            redirectTo: '/view1'
+            redirectTo: '/home'
         });
 
     $locationProvider.html5Mode({
